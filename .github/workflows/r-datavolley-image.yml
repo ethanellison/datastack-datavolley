@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - "main"
-defaults:
-  run:
-    working-directory: r-datavolley
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -27,6 +24,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: r-datavolley
           provenance: false
           tags: "ethanellison/dvw-to-csv:latest"
           # For pull requests, export results to the build cache.
