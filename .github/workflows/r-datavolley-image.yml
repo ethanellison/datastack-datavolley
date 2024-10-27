@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "main"
+    paths:
+      - "r-datavolley/**"
 jobs:
   docker:
     runs-on: ubuntu-latest
