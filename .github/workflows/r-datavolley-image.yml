@@ -25,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           file: ./r-datavolley/Dockerfile
-          context: ./r-datavolley
+          context: r-datavolley
           provenance: false
           tags: "ethanellison/dvw-to-csv:latest"
           # For pull requests, export results to the build cache.
