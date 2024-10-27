@@ -14,6 +14,10 @@ RUN apt-get update && apt-get install -y \
 RUN Rscript -e 'install.packages("aws.s3")' \
     && Rscript -e 'install.packages(c("datavolley","ovlytics"), repos = c("https://openvolley.r-universe.dev", "https://cloud.r-project.org"))'
 
+RUN rm -rf "$(go env GOROOT)" && \
+    rm -f /usr/local/bin/go && \
+    rm -f /usr/local/bin/gofmt
+    
 # Set the default working directory
 WORKDIR /app
 

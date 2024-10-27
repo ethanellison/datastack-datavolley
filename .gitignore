@@ -3,5 +3,6 @@ out/
 # Ignore input files
 dvw/
 
-# Ignore env files
+# Ignore dotfile files
 .env*
+*.lock
