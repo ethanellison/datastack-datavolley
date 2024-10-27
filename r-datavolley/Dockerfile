@@ -1,5 +1,5 @@
 # Use the rocker/tidyverse base image
-FROM rocker/tidyverse:latest
+FROM rocker/tidyverse:4.4
 
 # Set environment variable to prevent warnings being treated as errors
 ENV R_WARN_ON_STDERR=false
@@ -8,13 +8,11 @@ ENV R_WARN_ON_STDERR=false
 RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
-    libxml2-dev \
-    libpoppler-cpp-dev
+    libxml2-dev
 
 # Install R packages
-RUN Rscript -e 'install.packages("aws.s3", repos = "https://cloud.r-project.org")' \
-    && Rscript -e 'install.packages("pdftools", repos = "https://cloud.r-project.org")' \
-    && Rscript -e 'install.packages(c("volleyreport", "datavolley"), repos = c("https://openvolley.r-universe.dev", "https://cloud.r-project.org"))'
+RUN Rscript -e 'install.packages("aws.s3")' \
+    && Rscript -e 'install.packages(c("datavolley","ovlytics"), repos = c("https://openvolley.r-universe.dev", "https://cloud.r-project.org"))'
 
 # Set the default working directory
 WORKDIR /app

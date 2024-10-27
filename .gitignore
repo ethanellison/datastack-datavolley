@@ -1,5 +1,7 @@
-# Ignore data files
-*.dvw
-*.csv
-*.json
+# Ignore output files
+out/
+# Ignore input files
+dvw/
 
+# Ignore env files
+.env*

@@ -2,9 +2,9 @@ library(aws.s3)
 library(datavolley)
 library(dplyr)
 library(jsonlite)
-library(volleyreport)
+# library(volleyreport)
 library(ovlytics)
-library(duckDB)
+library(duckdb)
 
 # directory containing all list of dvw files
 d <- dir("./dvw", pattern = "dvw$", full.names = TRUE)
@@ -47,5 +47,5 @@ augmented_px <- ov_augment_plays(
 # create or replace augmented plays table
 dbWriteTable(con,"augmented_plays",data.frame(px),overwrite = TRUE)
 
-
+dbDisconnect(con)
 # TODO: setter distribution simulation
