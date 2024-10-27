@@ -24,6 +24,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          file: ./r-datavolley/Dockerfile
           context: ./r-datavolley
           provenance: false
           tags: "ethanellison/dvw-to-csv:latest"
