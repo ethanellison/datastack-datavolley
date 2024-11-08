@@ -2,9 +2,9 @@ library(aws.s3)
 library(datavolley)
 library(dplyr)
 library(jsonlite)
-# library(volleyreport)
+library(purrr)
 library(ovlytics)
-library(duckdb)
+# library(duckdb)
 
 # directory containing all list of dvw files
 d <- dir("./dvw", pattern = "dvw$", full.names = TRUE)
@@ -12,16 +12,21 @@ d <- dir("./dvw", pattern = "dvw$", full.names = TRUE)
 lx <- lapply(d, dv_read, insert_technical_timeouts = FALSE)
 
 # open duckDB connection
-con <- duckdb::dbConnect(duckdb::duckdb(),"out/datavolley.db")
+# con <- duckdb::dbConnect(duckdb::duckdb(),"out/datavolley.db")
 
 # combined plays object
 px <- bind_rows(lapply(lx, plays))
 
-# create or replace plays table
-dbWriteTable(con,"plays",data.frame(px),overwrite = TRUE)
+# remap inconsitent team names to team_id
+lx <-remap_team_names(lx, data.frame(from="MONTREAL", to="M-MONTREAL CARABINS", team_id="MRMC"))
+lx <-remap_team_names(lx, data.frame(from="UNB", to="M-UNB REDS", team_id="MRUR"))
 
+# create or replace plays table
+# dbWriteTable(con,"plays",data.frame(px),overwrite = TRUE)
+write.csv(px,"out/plays.csv", row.names = FALSE)
 # create or replace summary table
-duckdb::dbWriteTable(con,"summary",dvlist_summary(lx)[["ladder"]],overwrite=TRUE)
+# duckdb::dbWriteTable(con,"summary",dvlist_summary(lx)[["ladder"]],overwrite=TRUE)
+write.csv(dvlist_summary(lx)[["ladder"]],"out/summary.csv",row.names = FALSE)
 
 # TODO
 # only check for duplicate player names
@@ -32,11 +37,18 @@ duckdb::dbWriteTable(con,"summary",dvlist_summary(lx)[["ladder"]],overwrite=TRUE
 json_data <- toJSON(lx, pretty=TRUE)
 write(json_data, "out/output.json")
 
-lapply(lx, function(x){
-  # combine home and away players and overwrite players_db
-  players <- bind_rows(x[["meta"]][["players_v"]],x[["meta"]][["players_h"]])
-  dbWriteTable(con,"players",players,overwrite = TRUE)  
-})
+# Initialize empty dataframes to store aggregated results
+players_df <- data.frame() 
+
+# Apply function to each element in lx
+
+# Iteratively combine each element
+for (x in lx) {
+  players_df <- Reduce(function(x, y) bind_rows(x, y) %>% distinct(player_id,firstname,lastname), list(bind_rows(x[["meta"]][["players_v"]], x[["meta"]][["players_h"]]),players_df))
+  # players_df <- c(players_df, bind_rows(x[["meta"]][["players_v"]], x[["meta"]][["players_h"]]) %>% distinct(player_id,number,firstname,lastname,role))
+}
+
+write.csv(players_df, "out/players.csv")
 
 # augment plays using ovlytics
 augmented_px <- ov_augment_plays(
@@ -45,7 +57,7 @@ augmented_px <- ov_augment_plays(
   use_existing = TRUE
 )
 # create or replace augmented plays table
-dbWriteTable(con,"augmented_plays",data.frame(px),overwrite = TRUE)
-
-dbDisconnect(con)
+# dbWriteTable(con,"augmented_plays",data.frame(px),overwrite = TRUE)
+write.csv(augmented_px,"out/augmented_plays.csv",row.names=FALSE)
+# dbDisconnect(con)
 # TODO: setter distribution simulation

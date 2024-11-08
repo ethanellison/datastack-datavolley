@@ -6,3 +6,5 @@ dvw/
 # Ignore dotfile files
 .env*
 *.lock
+
+*.log

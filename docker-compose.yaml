@@ -1,0 +1,24 @@
+services:
+  r-datavolley:
+    build: ./r-datavolley
+    image: ethanellison/dvw-to-csv
+    volumes:
+      - rseq-volume:/app/out
+      - rseq-volume:/app/dvw
+  
+  dagster-datavolley:
+    build: ./dagster_datavolley
+    image: ethanellison/dagster-datavolley
+    volumes:
+      - rseq-volume:/app/out
+      - ./dagster_datavolley:/app
+    ports:
+      - "3000:3000"
+    # depends_on:
+    #   r-datavolley:
+    #     condition: service_completed_successfully
+
+volumes:
+  rseq-volume:
+    external: true
+  

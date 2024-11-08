@@ -1,0 +1,6 @@
+dagster-dbt 
+dagster-webserver
+dagster-duckdb
+dagster-duckdb-pandas
+dagster_docker
+dbt-duckdb
