@@ -1,31 +1,46 @@
-# Use the rocker/tidyverse base image
-FROM rocker/tidyverse:4.4
+# Use a more efficient base image for R, e.g., rocker/r-ver
+FROM rocker/tidyverse:4.4.0 AS build-stage
 
-# Set environment variable to prevent warnings being treated as errors
+# Set environment variable to suppress warnings during package installation
 ENV R_WARN_ON_STDERR=false
 
-# Install system dependencies for pdftools and other packages
-RUN apt-get update && apt-get install -y \
+# Install system dependencies and necessary libraries in a single RUN step
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     libcurl4-openssl-dev \
     libssl-dev \
-    libxml2-dev
+    libxml2-dev \
+    inotify-tools && \
+    # Clean up package manager cache to reduce image size
+    rm -rf /var/lib/apt/lists/*
 
-# Install R packages
-RUN Rscript -e 'install.packages("aws.s3")' \
-    && Rscript -e 'install.packages(c("datavolley","ovlytics"), repos = c("https://openvolley.r-universe.dev", "https://cloud.r-project.org"))'
+# Install R packages in a single RUN step to optimize cache
+RUN Rscript -e 'install.packages("aws.s3")' && \
+    Rscript -e 'install.packages(c("datavolley", "ovlytics"), repos = c("https://openvolley.r-universe.dev", "https://cloud.r-project.org"))'
 
-RUN rm -rf "$(go env GOROOT)" && \
-    rm -f /usr/local/bin/go && \
-    rm -f /usr/local/bin/gofmt
-    
-# Set the default working directory
+# Stage 2: Final Image (Runtime)
+FROM rocker/r-ver:4.4.0 AS final-stage
+
+# Set environment variable to suppress warnings during package installation
+ENV R_WARN_ON_STDERR=false
+
+# Install only the minimal runtime system dependencies in the final image
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    inotify-tools && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy only the necessary libraries and packages from the build stage
+COPY --from=build-stage /usr/local/lib/R/site-library /usr/local/lib/R/site-library
+
+# Copy the required application files into the final image
 WORKDIR /app
-
-# Create /app directory inside the container
-RUN mkdir -p /app/dvw
-
-# Copy the contents of the local folder to /app inside the container
-# (Make sure the local folder is in the same directory as your Dockerfile)
+# Create the necessary directory and copy only necessary files
 COPY ./main.R /app/main.R
-# Set the default command
-CMD ["Rscript", "/app/main.R"]
+COPY ./watch.sh /app/watch.sh
+
+# Set appropriate permissions for the watch script
+RUN chmod +x /app/watch.sh
+
+# Set the default command to run when the container starts
+CMD ["/app/watch.sh"]

@@ -18,8 +18,9 @@ lx <- lapply(d, dv_read, insert_technical_timeouts = FALSE)
 px <- bind_rows(lapply(lx, plays))
 
 # remap inconsitent team names to team_id
-lx <-remap_team_names(lx, data.frame(from="MONTREAL", to="M-MONTREAL CARABINS", team_id="MRMC"))
-lx <-remap_team_names(lx, data.frame(from="UNB", to="M-UNB REDS", team_id="MRUR"))
+lx <- remap_team_names(lx, data.frame(from="DALHOUSIE TIGERS", to="M-DALHOUSIE TIGERS", team_id="MRDT"))
+lx <- remap_team_names(lx, data.frame(from="MONTREAL", to="M-MONTREAL CARABINS", team_id="MRMC"))
+lx <- remap_team_names(lx, data.frame(from="UNB", to="M-UNB REDS", team_id="MRUR"))
 
 # create or replace plays table
 # dbWriteTable(con,"plays",data.frame(px),overwrite = TRUE)
@@ -44,8 +45,8 @@ players_df <- data.frame()
 
 # Iteratively combine each element
 for (x in lx) {
-  players_df <- Reduce(function(x, y) bind_rows(x, y) %>% distinct(player_id,firstname,lastname), list(bind_rows(x[["meta"]][["players_v"]], x[["meta"]][["players_h"]]),players_df))
-  # players_df <- c(players_df, bind_rows(x[["meta"]][["players_v"]], x[["meta"]][["players_h"]]) %>% distinct(player_id,number,firstname,lastname,role))
+  players <- bind_rows(x[["meta"]][["players_v"]], x[["meta"]][["players_h"]])
+  players_df <- Reduce(function(x, y) bind_rows(x, y) %>% distinct(player_id, number, firstname,lastname,role), list(players,players_df))
 }
 
 write.csv(players_df, "out/players.csv")
