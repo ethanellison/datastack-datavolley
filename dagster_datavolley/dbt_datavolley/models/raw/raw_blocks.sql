@@ -20,7 +20,7 @@ blocks as (
         serving_team,
 
         -- match
-        date_trunc('day', time) as match_date,
+        cast(time as DATE) as match_date,
         concat(home_team," ",visiting_team, " ", date_trunc('day', time)) as match_name,
 
         -- action
