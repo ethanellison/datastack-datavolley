@@ -1,5 +1,5 @@
 # Use a more efficient base image for R, e.g., rocker/r-ver
-FROM rocker/tidyverse:4.4.0 AS build-stage
+FROM rocker/tidyverse:4 AS build-stage
 
 # Set environment variable to suppress warnings during package installation
 ENV R_WARN_ON_STDERR=false
@@ -19,7 +19,7 @@ RUN Rscript -e 'install.packages("aws.s3")' && \
     Rscript -e 'install.packages(c("datavolley", "ovlytics"), repos = c("https://openvolley.r-universe.dev", "https://cloud.r-project.org"))'
 
 # Stage 2: Final Image (Runtime)
-FROM rocker/r-ver:4.4.0 AS final-stage
+FROM rocker/r-ver:4 AS final-stage
 
 # Set environment variable to suppress warnings during package installation
 ENV R_WARN_ON_STDERR=false
