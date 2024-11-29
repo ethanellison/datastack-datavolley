@@ -8,7 +8,7 @@ player_teams_joined as (
 		team_id,
 		player_id
 	from
-		{{ ref('raw_plays')}}
+		{{ source('raw', 'plays')}}
 )
 
 select * from source

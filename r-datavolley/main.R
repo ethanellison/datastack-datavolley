@@ -14,14 +14,14 @@ lx <- lapply(d, dv_read, insert_technical_timeouts = FALSE)
 # open duckDB connection
 # con <- duckdb::dbConnect(duckdb::duckdb(),"out/datavolley.db")
 
-# combined plays object
-px <- bind_rows(lapply(lx, plays))
-
 # remap inconsitent team names to team_id
 lx <- remap_team_names(lx, data.frame(from="DALHOUSIE TIGERS", to="M-DALHOUSIE TIGERS", team_id="MRDT"))
 lx <- remap_team_names(lx, data.frame(from="MONTREAL", to="M-MONTREAL CARABINS", team_id="MRMC"))
 lx <- remap_team_names(lx, data.frame(from="UNB", to="M-UNB REDS", team_id="MRUR"))
 
+
+# combined plays object
+px <- bind_rows(lapply(lx, plays))
 # create or replace plays table
 # dbWriteTable(con,"plays",data.frame(px),overwrite = TRUE)
 write.csv(px,"out/plays.csv", row.names = FALSE)

@@ -12,6 +12,7 @@ attacks as (
         point_id,
         team_touch_id,
         file_line_number,
+        team_id,
 
         -- teams
         home_team,
