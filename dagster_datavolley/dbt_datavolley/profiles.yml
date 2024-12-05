@@ -1,0 +1,12 @@
+dbt_datavolley:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: datavolley.duckdb
+      threads: 8
+      # schema: datavolley
+      extensions:
+        - httpfs
+        - parquet
+        - json
