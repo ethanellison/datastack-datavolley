@@ -2,7 +2,7 @@
 -- Use the `ref` function to select from other models
 
 with source as (
-    select * from {{ source('main','augmented_plays') }}
+    select * from {{ source('raw_data','raw_augmented_plays') }}
 ),
 
 blocks as (

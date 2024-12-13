@@ -4,7 +4,8 @@ source as (
 	select 
 		player_name,
 		action_team,
-		match_id,
+		match_name,
+		match_date,
 		{{ dbt_utils.pivot(
 			'evaluation_desc',
 			dbt_utils.get_column_values(ref('raw_attacks'), 'evaluation_desc'),
@@ -13,7 +14,7 @@ source as (
 		avg(evaluation_num) as eff,
 		count(*) as N
 	from {{ ref('raw_attacks') }}
-	group by 1,2,3
+	group by 1,2,3,4
 ),
 
 attacking_metrics as (

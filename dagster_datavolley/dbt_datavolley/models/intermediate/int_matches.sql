@@ -1,11 +1,9 @@
 with
 
 source as (
-	select distinct
-		match_id,
-		home_team_id,
-		visiting_team_id
-	from {{ source('main','augmented_plays')}}
+	select * from {{ ref('raw_matches') }}
 )
 
-select * from source
+select *
+from source
+order by match_date desc

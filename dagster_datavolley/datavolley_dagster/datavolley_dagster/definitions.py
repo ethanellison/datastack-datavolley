@@ -1,18 +1,11 @@
 import os
-from dagster import Definitions
+from dagster import Definitions, load_assets_from_modules
 from dagster_dbt import DbtCliResource
-from dagster_duckdb import DuckDBResource
+from dagster_duckdb_pandas import DuckDBPandasIOManager
 
-from .assets import (
-    raw_players,
-    dbt_datavolley_dbt_assets,
-    players,
-    raw_plays,
-    raw_augmented_plays,
-    summary,
-    # attacks_preview,
-    # file_meta,
-)
+from .assets import raw_data, analysis
+from .assets.dbt import dbt_datavolley_dbt_assets
+
 from .project import dbt_datavolley_project
 from .schedules import schedules
 
@@ -20,21 +13,30 @@ duckdb_database_path = dbt_datavolley_project.project_dir.joinpath("datavolley.d
 
 # players = AssetSpec(key="int_players")
 
+raw_data_assets = load_assets_from_modules(
+    raw_data,
+    group_name="raw_data",
+    key_prefix=["duckdb", "raw"],
+)
+
+analysis_assets = load_assets_from_modules(
+    analysis,
+    group_name="analysis",
+)
+
+
 defs = Definitions(
     assets=[
-        raw_players,
-        players,
-        summary,
-        raw_augmented_plays,
-        raw_plays,
+        *raw_data_assets,
+        *analysis_assets,
         dbt_datavolley_dbt_assets,
-        # attacks_preview,
-        # file_meta,
     ],
     schedules=schedules,
     resources={
         "dbt": DbtCliResource(project_dir=dbt_datavolley_project),
-        "duckdb": DuckDBResource(database=os.fspath(duckdb_database_path)),
+        "io_manager": DuckDBPandasIOManager(
+            database=os.fspath(duckdb_database_path)
+        ),
     },
 )
 

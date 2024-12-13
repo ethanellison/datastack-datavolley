@@ -17,6 +17,13 @@ services:
     # depends_on:
     #   r-datavolley:
     #     condition: service_completed_successfully
+    develop:
+      watch:
+        - action: sync
+          path: ./dagster_datavolley
+          target: /app
+          ignore:
+            - ./dagster_datavolley/Dockerfile
   
   file-browser:
     build: ./files

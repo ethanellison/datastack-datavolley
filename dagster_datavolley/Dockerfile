@@ -9,7 +9,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Clone the project repository
-COPY . .
+COPY --chown=app:app . .
 
 EXPOSE 3000
 

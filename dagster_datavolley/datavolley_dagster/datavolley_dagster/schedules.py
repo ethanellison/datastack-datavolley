@@ -3,7 +3,7 @@ To add a daily schedule that materializes your dbt assets, uncomment the followi
 """
 from dagster_dbt import build_schedule_from_dbt_selection
 
-from .assets import dbt_datavolley_dbt_assets
+from .assets import dbt
 
 schedules = [
 #     build_schedule_from_dbt_selection(

@@ -4,8 +4,8 @@ dbt_datavolley:
     dev:
       type: duckdb
       path: datavolley.duckdb
-      threads: 8
-      # schema: datavolley
+      threads: 4
+      schema: dbt_schema
       extensions:
         - httpfs
         - parquet

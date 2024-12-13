@@ -2,7 +2,7 @@
 -- Use the `ref` function to select from other models
 
 with source as (
-    select * from {{ source('main','augmented_plays') }}
+    select * from {{ source('raw_data','raw_augmented_plays') }}
 ),
 
 attacks as (
@@ -20,13 +20,9 @@ attacks as (
         team as action_team,
         serving_team,
 
-        -- match
-        cast(time as DATE) as match_date,
-        concat(home_team,' ',visiting_team,' ', match_date) as match_name,
-
         -- action
+	{{ dbt_utils.generate_surrogate_key(['team_id','player_number']) }} as player_key,
         player_id,
-        player_name, -- TODO: replace with players table lookup
         skill_type,
         evaluation as evaluation_desc,
         case
@@ -62,6 +58,27 @@ attacks as (
         source
 
     where skill = 'Attack'
+),
+
+joined_on_matches as (
+
+    select
+        a.*,
+        m.match_date as match_date,
+        m.match_name as match_name
+    from attacks as a
+    left join {{ ref('int_matches') }} as m
+    on a.match_id = m.cleaned_match_id
+
+),
+
+joined_on_players as (
+    select
+        j.*,
+        p.player_name
+    from joined_on_matches as j
+    left join {{ ref('int_players')}} as p
+    on j.player_key = p.player_key
 )
 
-select * from attacks
+select * from joined_on_players

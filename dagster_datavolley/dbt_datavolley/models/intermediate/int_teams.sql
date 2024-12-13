@@ -2,9 +2,9 @@ with
 
 source as (
 	select distinct
-		team_id,
-		team
-	from {{ source('main','augmented_plays')}}
+		home_team.team_id,
+		home_team.team
+	from {{ ref('raw_matches') }}
 )
 
 select * from source
