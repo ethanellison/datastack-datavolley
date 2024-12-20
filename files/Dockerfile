@@ -1,5 +1,5 @@
 # Stage 1: Build stage (to install Filebrowser)
-FROM ubuntu:20.04 AS builder
+FROM ubuntu:24.04 AS builder
 
 # Install necessary build dependencies
 RUN apt-get update && \
@@ -13,7 +13,7 @@ RUN apt-get update && \
 RUN curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 
 # Stage 2: Runtime stage
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
 # Install only the necessary runtime dependencies
 RUN apt-get update && \

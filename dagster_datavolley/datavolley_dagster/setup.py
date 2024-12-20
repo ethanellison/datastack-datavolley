@@ -6,14 +6,18 @@ setup(
     packages=find_packages(),
     package_data={
         "datavolley_dagster": [
-            "dbt-project/**/*",
+            "dbt-datavolley/**/*",
         ],
     },
     install_requires=[
+        "duckdb",
         "dagster",
         "dagster-cloud",
         "dagster-dbt",
         "dbt-duckdb<1.9",
+        "dagster-duckdb",
+        "dagster-duckdb-pandas",
+        "pydatavolley",
     ],
     extras_require={
         "dev": [

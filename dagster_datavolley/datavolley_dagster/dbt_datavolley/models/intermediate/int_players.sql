@@ -3,10 +3,10 @@ with
 
 players as (
     select 
-		{{ dbt_utils.star(from=source('raw_data', 'raw_players'), except=['number'])}},
+		{{ dbt_utils.star(from=source('raw', 'raw_players'), except=['number'])}},
 		number::double as number
     from 
-	{{ source('raw_data', 'raw_players') }}
+	{{ source('raw', 'raw_players') }}
 ),
 
 teams as (
@@ -16,7 +16,7 @@ teams as (
 		player_id,
 		player_name
 	from 
-		{{ source('raw_data', 'raw_augmented_plays')}}
+		{{ source('raw', 'raw_augmented_plays')}}
 ),
 
 player_teams_joined as (
