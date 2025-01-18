@@ -37,10 +37,10 @@ COPY --from=build-stage /usr/local/lib/R/site-library /usr/local/lib/R/site-libr
 WORKDIR /app
 # Create the necessary directory and copy only necessary files
 COPY ./main.R /app/main.R
-COPY ./watch.sh /app/watch.sh
+# COPY ./watch.sh /app/watch.sh
 
 # Set appropriate permissions for the watch script
-RUN chmod +x /app/watch.sh
+# RUN chmod +x /app/watch.sh
 
 # Set the default command to run when the container starts
-CMD ["/app/watch.sh"]
+CMD ["Rscript", "/app/main.R"]

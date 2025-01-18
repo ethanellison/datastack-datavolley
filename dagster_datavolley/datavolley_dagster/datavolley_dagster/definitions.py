@@ -27,7 +27,7 @@ analysis_assets = load_assets_from_modules(
 defs = Definitions(
     assets=[
         *raw_data_assets,
-        *analysis_assets,
+        # *analysis_assets,
         dbt_datavolley_dbt_assets,
     ],
     schedules=schedules,

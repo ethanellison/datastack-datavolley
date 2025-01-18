@@ -3,21 +3,23 @@ services:
     build: ./r-datavolley
     image: ethanellison/dvw-to-csv
     volumes:
-      - output-files:/app/out
-      - datavolley-files:/app/dvw
+      # - output-files:/app/out
+      - /mnt/smbshare/eellison/rseq 24-25:/app/dvw
+      - /mnt/smbshare/eellison/rseq 24-25/out:/app/out
   
   dagster-datavolley:
     build: ./dagster_datavolley
     image: ethanellison/dagster-datavolley
     volumes:
-      - datavolley-files:/app/dvw
-      - output-files:/app/out
+      - /mnt/smbshare/eellison/rseq 24-25:/app/dvw
+      # - output-files:/app/out
+      - /mnt/smbshare/eellison/rseq 24-25/out:/app/out
       # - ./dagster_datavolley:/app
     ports:
       - "3000:3000"
-    # depends_on:
-    #   r-datavolley:
-    #     condition: service_completed_successfully
+    depends_on:
+      r-datavolley:
+        condition: service_completed_successfully
     develop:
       watch:
         - action: sync
@@ -28,17 +30,43 @@ services:
     env_file:
       - ./.env
   
-  file-browser:
-    build: ./files
-    image: ethanellison/file-browser
-    volumes:
-      - datavolley-files:/files/datavolley
-      - output-files:/files/out
+  # file-browser:
+  #   build: ./files
+  #   image: ethanellison/file-browser
+  #   volumes:
+  #     # - datavolley-files:/files/datavolley
+  #     # - output-files:/files/out
+  #     - /mnt/smbshare/eellison/rseq 24-25/out:/files/out
+  #   ports:
+  #     - "8080:8080"
+
+  trino:  
+    container_name: trino
     ports:
-      - "8080:8080"
+      - 8080:8080
+    volumes:
+      - ./trino:/etc/trino
+    image: trinodb/trino
 
+  nessie:
+    image: ghcr.io/projectnessie/nessie
+    container_name: nessie
+    ports:
+      - 19120:19120
 
-volumes:
-  datavolley-files:
-  output-files:
+  rest:
+    image: tabulario/iceberg-rest
+    container_name: iceberg-rest
+    ports:
+      - 8181:8181
+    environment:
+      - AWS_ACCESS_KEY_ID=admin
+      - AWS_SECRET_ACCESS_KEY=ethan1997
+      - AWS_REGION=us-east-1
+      - CATALOG_WAREHOUSE=s3://dwh/
+      - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
+      - CATALOG_S3_ENDPOINT=http://192.168.1.116:9002
+# volumes:
+#   postgres-data:
+  # output-files:
   

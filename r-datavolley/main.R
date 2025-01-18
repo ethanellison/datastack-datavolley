@@ -49,7 +49,7 @@ for (x in lx) {
   players_df <- Reduce(function(x, y) bind_rows(x, y) %>% distinct(player_id, number, firstname,lastname,role), list(players,players_df))
 }
 
-write.csv(players_df, "out/players.csv")
+write.csv(players_df, "out/raw_players.csv")
 
 # augment plays using ovlytics
 augmented_px <- ov_augment_plays(

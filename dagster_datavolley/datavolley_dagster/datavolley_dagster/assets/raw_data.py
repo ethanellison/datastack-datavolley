@@ -1,3 +1,4 @@
+import json
 import os
 import pandas as pd
 from datavolley import read_dv
@@ -5,7 +6,6 @@ import requests
 from dagster import (
     asset,
 )
-from dagster_dbt import get_asset_key_for_model
 
 
 @asset
@@ -25,7 +25,7 @@ def raw_plays() -> pd.DataFrame:
 
 @asset
 def raw_players() -> pd.DataFrame:
-    df = pd.read_csv("/app/out/players.csv")
+    df = pd.read_csv("/app/out/raw_players.csv")
     return df
 
 
@@ -38,6 +38,22 @@ def raw_augmented_plays() -> pd.DataFrame:
 @asset(compute_kind="python")
 def summary() -> pd.DataFrame:
     data = pd.read_csv("/app/out/summary.csv")
+    return data
+
+
+@asset(compute_kind="python")
+def raw_output() -> pd.DataFrame:
+    # Path to the JSON file
+    file_path = "/app/out/output.json"
+
+    # Load the JSON data from the file
+    with open(file_path, "r", encoding="utf-8") as file:
+        json_data = json.load(file)
+        # print(json_data.keys())
+        # raw_data = json_data["meta"]
+
+    data = pd.json_normalize(json_data, max_level=0)
+    data = data.drop(columns=["plays", "raw"])
     return data
 
 

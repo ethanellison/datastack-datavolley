@@ -55,4 +55,4 @@ players_removed_duplicates as (
 		players_with_key
 )
 
-select * from players_removed_duplicates where player_row_n = 1
+select * from players_removed_duplicates 

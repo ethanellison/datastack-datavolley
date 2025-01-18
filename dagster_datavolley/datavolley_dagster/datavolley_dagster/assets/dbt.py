@@ -31,7 +31,7 @@ class CustomDagsterDbtTranslator(DagsterDbtTranslator):
 )
 def dbt_datavolley_dbt_assets(context: AssetExecutionContext, dbt: DbtCliResource):
     yield from dbt.cli(
-        ["build"], context=context
+        ["build", "--full-refresh"], context=context
     ).stream().fetch_row_counts().fetch_column_metadata()
 
 
