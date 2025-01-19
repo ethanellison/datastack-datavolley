@@ -1,0 +1,13 @@
+dbt_datavolley:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # path: datavolley.duckdb
+      path: "{{env_var('DUCKDB_DATABASE')}}"
+      threads: 4
+      schema: dbt_schema
+      extensions:
+        - httpfs
+        - parquet
+        - json
