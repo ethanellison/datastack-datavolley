@@ -4,6 +4,7 @@
     "python@3.12",
     "python312Packages.pip@latest",
     "duckdb@latest",
+    "R@latest",
   ],
   "shell": {
     "init_hook": [
