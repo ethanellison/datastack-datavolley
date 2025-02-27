@@ -95,7 +95,3 @@ networks:
 
 volumes:
   dremio-data:
-    driver_opts:
-      type: "nfs"
-      o: "addr=192.168.1.116,nolock,soft,rw"
-      device: ":/mnt/nas-pool/nfs"
