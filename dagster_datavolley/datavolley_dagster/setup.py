@@ -15,6 +15,8 @@ setup(
         "dagster-cloud",
         "dagster-dbt",
         "dbt-duckdb<1.9",
+        "dbt-core",
+        "dbt-dremio",
         "dagster-duckdb",
         "dagster-duckdb-pandas",
         "pydatavolley",
