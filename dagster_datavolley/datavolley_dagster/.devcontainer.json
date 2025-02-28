@@ -1,5 +1,5 @@
 {
     "image": "mcr.microsoft.com/vscode/devcontainers/python:3.10",
-    "postCreateCommand":"pip install -e \".[dev]\"",
+    // "postCreateCommand":"pip install -e \".[dev]\"",
     "forwardPorts": [3000]
 }
