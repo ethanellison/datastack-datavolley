@@ -46,6 +46,19 @@ services:
   #   # env_file:
   #   #   - ./.env
 
+  db:
+    image: mysql
+    container_name: mysql
+    networks:
+      iceberg_net:
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dvw
+      MYSQL_USER: dvw
+      MYSQL_PASSWORD: dvw
+    ports:
+      - 3306:3306
+
   nessie:
     image: quay.io/projectnessie/nessie:latest
     container_name: nessie
@@ -53,6 +66,12 @@ services:
       iceberg_net:
     ports:
       - 19120:19120
+    environment:
+      - nessie.version.store.type=JDBC2
+      - nessie.version.store.persist.jdbc.datasource=mysql
+      - quarkus.datasource.mysql.jdbc.url=jdbc:mysql://mysql:3306/dvw
+      - quarkus.datasource.mysql.username=dvw
+      - quarkus.datasource.mysql.password=dvw
 
   rest:
     image: apache/iceberg-rest-fixture

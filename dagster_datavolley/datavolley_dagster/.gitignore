@@ -1,0 +1,47 @@
+# DBT
+target/
+dbt_packages/
+logs/
+.user.yml
+
+# Dagster
+.tmp*/
+.dagster/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Virtual Environment
+venv/
+env/
+.venv/
+.python-version
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Package files
+*.egg-info/
+dist/
+build/
+
+# Local development
+.tmp/
+.temp/
+.cache/
