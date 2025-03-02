@@ -1,0 +1,17 @@
+{
+    "image": "mcr.microsoft.com/vscode/devcontainers/python:3",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "GitHub.copilot"
+            ]
+        }
+    },
+    "features": {
+        "ghcr.io/va-h/devcontainers-features/uv:1": {}
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "workspaceFolder": "/workspace"
+}
