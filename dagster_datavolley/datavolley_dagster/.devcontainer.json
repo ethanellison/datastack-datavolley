@@ -14,6 +14,6 @@
         "ghcr.io/devcontainers-extra/features/neovim-homebrew:1": {}
     },
     "forwardPorts": [3000],
-    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
-    "workspaceFolder": "/workspace"
+    // "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    // "workspaceFolder": "/workspace"
 }
