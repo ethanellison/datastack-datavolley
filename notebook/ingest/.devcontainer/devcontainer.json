@@ -1,0 +1,23 @@
+{
+    "build": { 
+        "dockerfile": "Dockerfile" 
+    },
+    "forwardPorts": [8888],
+    "workspaceMount": "source=${localWorkspaceFolder}/notebook,target=/workspace,type=bind,consistency=cached",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-toolsai.jupyter"
+            ]
+        }
+    },
+    "runArgs": ["--device=/dev/net/tun"],
+    "features": {
+        // ...
+        "ghcr.io/tailscale/codespace/tailscale": {}
+        // ...
+    }
+
+}
