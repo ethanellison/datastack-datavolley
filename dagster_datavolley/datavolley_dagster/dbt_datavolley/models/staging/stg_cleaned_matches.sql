@@ -2,12 +2,14 @@ with
 
 source as (
     select
-        meta->>'$.match_id[0]' as match_id,
-        meta->>'$.match[0].date' as match_date, 
-        file_meta->>'$[0].preferred_date_format' as date_format,
-        meta->'$.teams[0]' as home_team,
-        meta->'$.teams[1]' as away_team
-    from {{ source('raw', 'raw_output')}}
+        match_id,
+        match_date, 
+        preferred_date_format,
+        home_team_id,
+        away_team_id,
+        home_team_name,
+        away_team_name
+    from {{ source('raw', 'raw_matches') }}
 )
 
 

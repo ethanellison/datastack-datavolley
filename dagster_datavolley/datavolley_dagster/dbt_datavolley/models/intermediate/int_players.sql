@@ -2,11 +2,7 @@
 with 
 
 players as (
-    select 
-		{{ dbt_utils.star(from=source('raw', 'raw_players'), except=['number'])}},
-		number::double as number
-    from 
-	{{ source('raw', 'raw_players') }}
+    select * from {{ source('raw', 'raw_players') }}
 ),
 
 teams as (
@@ -33,7 +29,8 @@ player_teams_joined as (
 players_with_key as (
 
 select 
-	{{ dbt_utils.generate_surrogate_key(['team_id','number']) }} as player_key,
+	-- {{ dbt_utils.generate_surrogate_key(['team_id','number']) }} as player_key,
+	md5(concat(team_id,number)) as player_key,
 	team_id, 
 	player_id, 
 	number, 

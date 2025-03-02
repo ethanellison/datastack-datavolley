@@ -1,3 +1,15 @@
+{% set evaluations_query %}
+select distinct evaluation_desc from {{ ref('stg_cleaned_actions') }} where skill = 'Block'
+{% endset %}
+
+{% set evaluations = run_query(evaluations_query) %}
+
+{% if execute %}
+{% set evaluations_list = evaluations.columns[0].values() %}
+{% else %}
+{% set evaluations_list = [] %}
+{% endif %}
+
 with 
 
 source as (

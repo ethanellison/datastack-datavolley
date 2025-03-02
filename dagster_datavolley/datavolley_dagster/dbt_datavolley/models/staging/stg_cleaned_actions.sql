@@ -19,7 +19,8 @@ actions as (
         serving_team,
 
         -- action
-	{{ dbt_utils.generate_surrogate_key(['team_id','player_number']) }} as player_key,
+	-- {{ dbt_utils.generate_surrogate_key(['team_id','player_number']) }} as player_key,
+        md5(concat(team_id,player_number)) as player_key,
         player_id,
         skill,
         skill_type,
