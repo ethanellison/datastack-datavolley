@@ -9,8 +9,8 @@ from .assets.dbt import dbt_datavolley_dbt_assets
 from .project import dbt_datavolley_project
 from .schedules import schedules
 
-# duckdb_database_path = dbt_datavolley_project.project_dir.joinpath("datavolley.duckdb")
-duckdb_database_path = os.getenv("DUCKDB_DATABASE")
+duckdb_database_path = dbt_datavolley_project.project_dir.joinpath("datavolley.duckdb")
+# duckdb_database_path = os.getenv("DUCKDB_DATABASE")
 # players = AssetSpec(key=duckdb_database)
 raw_data_assets = load_assets_from_modules(
     [raw_data],
@@ -26,13 +26,13 @@ analysis_assets = load_assets_from_modules(
 
 defs = Definitions(
     assets=[
-        *raw_data_assets,
+        # *raw_data_assets,
         # *analysis_assets,
         dbt_datavolley_dbt_assets,
     ],
     schedules=schedules,
     resources={
         "dbt": DbtCliResource(project_dir=dbt_datavolley_project),
-        "io_manager": DuckDBPandasIOManager(database=duckdb_database_path),
+        # "io_manager": DuckDBPandasIOManager(database=duckdb_database_path),
     },
 )

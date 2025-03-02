@@ -27,7 +27,7 @@ class CustomDagsterDbtTranslator(DagsterDbtTranslator):
 
 @dbt_assets(
     manifest=dbt_datavolley_project.manifest_path,
-    dagster_dbt_translator=CustomDagsterDbtTranslator(),
+    # dagster_dbt_translator=CustomDagsterDbtTranslator(),
 )
 def dbt_datavolley_dbt_assets(context: AssetExecutionContext, dbt: DbtCliResource):
     yield from dbt.cli(
