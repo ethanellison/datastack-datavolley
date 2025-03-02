@@ -14,7 +14,7 @@ macro-paths: ["macros"]
 target-path: "target"
 clean-targets:
     - "target"
-    - "dbt_modules"
+    - "dbt_packages"
     - "logs"
 
 require-dbt-version: [">=1.0.0", "<2.0.0"]
@@ -22,16 +22,16 @@ require-dbt-version: [">=1.0.0", "<2.0.0"]
 models:
   dbt_datavolley:
     staging:
-      +schema: stg
+      +schema: datavolley.stg
       +materialized: view
     intermediate:
-      +schema: int
+      +schema: datavolley.int
       +materialized: view
     marts:
       dimensions:
-        +schema: dim
-        +materialized: table
+        +schema: datavolley.dim
+        +materialized: view
       facts:
-        +schema: fct
-        +materialized: table
+        +schema: datavolley.fct
+        +materialized: view
 

@@ -1,13 +1,26 @@
 dbt_datavolley:
-  target: dev
+  target: dremio
   outputs:
     dev:
       type: duckdb
-      # path: datavolley.duckdb
-      path: "{{env_var('DUCKDB_DATABASE')}}"
+      path: datavolley.duckdb
+      # path: "{{env_var('DUCKDB_DATABASE')}}"
       threads: 4
       schema: dbt_schema
       extensions:
         - httpfs
         - parquet
         - json
+    
+    dremio:
+      type: dremio
+      software_host: "{{env_var('DREMIO_HOST')}}"
+      port: 9047
+      username: "{{env_var('DREMIO_USER')}}"
+      password: "{{env_var('DREMIO_PASSWORD')}}"
+      threads: 4
+      use_ssl: false
+      object_storage_source: nessie
+      dremio_space: nessie
+      # dremio_space_folder: datavolley
+      # schema: nessie.datavolley
