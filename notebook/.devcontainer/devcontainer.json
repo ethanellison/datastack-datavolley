@@ -23,5 +23,5 @@
         "ghcr.io/tailscale/codespace/tailscale": {}
         // ...
     },
-//    "remoteUser": "root"
+    "remoteUser": "jovyan"
 }
