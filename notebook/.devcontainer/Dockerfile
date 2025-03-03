@@ -14,7 +14,6 @@ RUN Rscript -e 'install.packages("arrow", repos = c("https://apache.r-universe.d
 # Copy only the necessary libraries and packages from the build stage
 # COPY --from=build-stage /usr/local/lib/R/site-library /usr/local/lib/R/site-library
 
-# Copy the required application files into the final image
 WORKDIR /home
 # Create the necessary directory and copy only necessary files
 # COPY ./main.R /app/main.R
