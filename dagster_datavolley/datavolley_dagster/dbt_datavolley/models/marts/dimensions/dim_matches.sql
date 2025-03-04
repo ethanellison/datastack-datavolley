@@ -1,7 +1,7 @@
 
 with source as (
 	select 
-		cleaned_match_id as match_id,
+		match_id,
 		home_team_id,
 		home_team_name,
 		away_team_id,

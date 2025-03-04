@@ -2,13 +2,14 @@ version: 2
 
 sources:
   - name: raw
-    schema: datavolley.raw
+    database: datavolley
+    schema: datavolley.rseq
     tables:
-      - name: raw_matches
-      - name: raw_plays
-      - name: raw_augmented_plays
-      - name: raw_players
-      - name: oci_serve_speeds
+      - name: "output.json"
+      - name: "plays.gz.parquet"
+      - name: "augmented_plays.gz.parquet"
+      - name: "players.gz.parquet"
+      # - name: oci_serve_speeds
   - name: dim
     schema: datavolley.dim
     tables:

@@ -1,7 +1,8 @@
 with source as
 (
     select
-	replace(match_id, '-', '') as cleaned_match_id,
+	match_id,
+	-- replace(match_id, '-', '') as cleaned_match_id,
 	home_team_id,	
 	home_team_name,
 	away_team_id,

@@ -1,6 +1,6 @@
 
 with source as (
-    select * from {{ source('raw','raw_augmented_plays') }}
+    select * from {{ source('raw',"augmented_plays.gz.parquet") }}
 ),
 
 actions as (
