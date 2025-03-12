@@ -50,10 +50,10 @@ services:
       - MB_DB_USER=dvw
       - MB_DB_PASS=dvw
       - MB_DB_HOST=db
-      - MB_PLUGINS_DIR=/plugins
+      - MB_PLUGINS_DIR=/app/plugins
     volumes:
-      - ./metabase-plugins:/plugins
-        
+      - ./metabase-plugins:/app/plugins
+
   db:
     image: postgres
     container_name: db
