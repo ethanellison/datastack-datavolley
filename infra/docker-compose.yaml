@@ -36,16 +36,21 @@ services:
   #   ports:
   #     - "3000:3000"
 
-  #   # develop:
-  #   #   watch:
-  #   #     - action: sync
-  #   #       path: ./dagster_datavolley
-  #   #       target: /app
-  #   #       ignore:
-  #   #         - ./dagster_datavolley/Dockerfile
-  #   # env_file:
-  #   #   - ./.env
-
+  metabase:
+    image: metabase/metabase
+    container_name: metabase
+    networks:
+      iceberg_net:
+    ports:
+      - 3000:3000
+    environment:
+      - MB_DB_TYPE=postgres
+      - MB_DB_DBNAME=dvw
+      - MB_DB_PORT=5432
+      - MB_DB_USER=dvw
+      - MB_DB_PASS=dvw
+      - MB_DB_HOST=db
+  
   db:
     image: postgres
     container_name: db
