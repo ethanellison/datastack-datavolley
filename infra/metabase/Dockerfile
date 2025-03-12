@@ -1,13 +1,14 @@
 FROM eclipse-temurin:23-jre
 
+
+# Install curl and jq
+RUN apt-get update && apt-get install -y curl jq
+
 # Create necessary directories
 RUN mkdir -p /app /plugins
 
 # Download Metabase jar
 RUN curl -L -o /app/metabase.jar https://downloads.metabase.com/latest/metabase.jar
-
-# Install curl and jq
-RUN apt-get update && apt-get install -y curl jq
 
 # Download Dremio driver with latest version
 RUN LATEST_VERSION=$(curl -s https://api.github.com/repos/Baoqi/metabase-dremio-driver/releases/latest | jq -r .tag_name) && \
