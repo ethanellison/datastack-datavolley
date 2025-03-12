@@ -21,4 +21,4 @@ ENV MB_PLUGINS_DIR=/plugins
 EXPOSE 3000
 
 # Default command
-CMD ["java", "-jar", "/app/metabase.jar"]
+CMD ["java","--add-opens", "java.base/java.nio=ALL-UNNAMED", "-jar", "/app/metabase.jar"]

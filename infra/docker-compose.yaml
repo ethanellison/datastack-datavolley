@@ -50,9 +50,6 @@ services:
       - MB_DB_USER=dvw
       - MB_DB_PASS=dvw
       - MB_DB_HOST=db
-      # - MB_PLUGINS_DIR=/app/plugins
-    volumes:
-      - ./metabase-plugins/dremio.metabase-driver.jar:/app/dremio.metabase-driver.jar
 
   db:
     image: postgres
