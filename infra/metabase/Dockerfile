@@ -1,4 +1,10 @@
-FROM metabase/metabase:latest
+FROM eclipse-temurin:23-jre
+
+# Create necessary directories
+RUN mkdir -p /app /plugins
+
+# Download Metabase jar
+RUN curl -L -o /app/metabase.jar https://downloads.metabase.com/latest/metabase.jar
 
 # Install curl and jq
 RUN apt-get update && apt-get install -y curl jq
