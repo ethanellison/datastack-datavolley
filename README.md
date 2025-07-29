@@ -1,2 +1,2 @@
 # datastack-datavolley
-[ ] migrate notebooks to marimo
+[x] migrate notebooks to marimo
