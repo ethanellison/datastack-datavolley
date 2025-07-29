@@ -1,2 +1,6 @@
 # datastack-datavolley
-[x] migrate notebooks to marimo
+
+## TODOS
+- migrate notebooks to marimo
+- write audit publish pipeline in dagster-dbt
+- deploy pipeline
